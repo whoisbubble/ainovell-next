@@ -618,6 +618,15 @@ select {
     overflow: visible;
   }
 
+  .win95-btn--choice {
+    flex-wrap: wrap;
+  }
+
+  .win95-btn--choice > .shrink-0 {
+    width: 100%;
+    margin-top: 3px;
+  }
+
   .setup-options-grid,
   .mini-game-options,
   .grid-cols-2 {

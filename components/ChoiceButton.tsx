@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CHOICE_RISK_RULES } from "@/lib/game-state";
 import type { GameScene } from "@/lib/schemas";
 
 type ChoiceButtonProps = {
@@ -20,6 +21,9 @@ export function ChoiceButton({
 }: ChoiceButtonProps) {
   const [expanded, setExpanded] = useState(false);
   const longText = choice.text.length > 70 || choice.hint.length > 85;
+  const fatalChance = Math.round(CHOICE_RISK_RULES[choice.risk].fatalChance * 100);
+  const woundChance = Math.round(CHOICE_RISK_RULES[choice.risk].woundChance * 100);
+  const riskDetails = `смерть ${fatalChance}%, урон ${woundChance}%`;
 
   return (
     <div className="win95-choice">
@@ -28,7 +32,7 @@ export function ChoiceButton({
         disabled={disabled}
         onClick={onClick}
         className="win95-btn win95-btn--choice w-full !justify-start text-left"
-        title={choice.hint}
+        title={`${choice.hint}\nРиск: ${riskDetails}`}
       >
         <span className="min-w-0 flex-1">
           <span
@@ -44,7 +48,9 @@ export function ChoiceButton({
             {choice.hint}
           </span>
         </span>
-        <span className="shrink-0">[{riskText[choice.risk]}]</span>
+        <span className="shrink-0">
+          [{riskText[choice.risk]}: {riskDetails}]
+        </span>
       </button>
       {longText ? (
         <button

@@ -18,12 +18,126 @@ type MiniGamePatch = {
   addFlags?: string[];
 };
 
+type ChoiceRisk = GameScene["choices"][number]["risk"];
+type ChoiceRiskStatus = "safe" | "wounded" | "fatal";
+
+type ChoiceRiskRule = {
+  fatalChance: number;
+  woundChance: number;
+  minDamage: number;
+  maxDamage: number;
+};
+
+export type ChoiceRiskOutcome = {
+  status: ChoiceRiskStatus;
+  hpDelta: number;
+  roll: number;
+  latestAction: string;
+  statusText: string;
+  flag: string;
+};
+
+export const CHOICE_RISK_RULES: Record<ChoiceRisk, ChoiceRiskRule> = {
+  low: {
+    fatalChance: 0,
+    woundChance: 0.16,
+    minDamage: 4,
+    maxDamage: 10,
+  },
+  medium: {
+    fatalChance: 0.12,
+    woundChance: 0.42,
+    minDamage: 12,
+    maxDamage: 28,
+  },
+  high: {
+    fatalChance: 0.58,
+    woundChance: 0.3,
+    minDamage: 35,
+    maxDamage: 70,
+  },
+};
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
 function unique(values: string[]) {
   return Array.from(new Set(values));
+}
+
+function randomInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function choiceLabel(choice: GameScene["choices"][number]) {
+  return choice.text.replace(/\s+/g, " ").trim();
+}
+
+export function rollChoiceRisk(
+  state: GameState,
+  choice: GameScene["choices"][number],
+): ChoiceRiskOutcome {
+  const rule = CHOICE_RISK_RULES[choice.risk];
+  const roll = Math.random();
+  const isRussian = state.language === "ru";
+  const choiceText = choiceLabel(choice);
+
+  if (roll < rule.fatalChance) {
+    return {
+      status: "fatal",
+      hpDelta: -999,
+      roll,
+      flag: `choice_risk_${choice.id}_fatal`,
+      latestAction: isRussian
+        ? `Выбор "${choiceText}" оказался смертельным. Герой погиб из-за риска.`
+        : `The choice "${choiceText}" became fatal. The hero died because of the risk.`,
+      statusText: isRussian
+        ? "Риск сработал фатально: герой погиб."
+        : "Risk roll was fatal: the hero died.",
+    };
+  }
+
+  if (roll < rule.fatalChance + rule.woundChance) {
+    const damage = randomInt(rule.minDamage, rule.maxDamage);
+
+    return {
+      status: "wounded",
+      hpDelta: -damage,
+      roll,
+      flag: `choice_risk_${choice.id}_wounded`,
+      latestAction: isRussian
+        ? `Выбор "${choiceText}" ранил героя: -${damage} HP.`
+        : `The choice "${choiceText}" wounded the hero: -${damage} HP.`,
+      statusText: isRussian
+        ? `Риск сработал: герой потерял ${damage} HP.`
+        : `Risk roll hit: the hero lost ${damage} HP.`,
+    };
+  }
+
+  return {
+    status: "safe",
+    hpDelta: 0,
+    roll,
+    flag: `choice_risk_${choice.id}_safe`,
+    latestAction: isRussian
+      ? `Герой пережил рискованный выбор "${choiceText}" без потерь.`
+      : `The hero survived the risky choice "${choiceText}" without losses.`,
+    statusText: isRussian
+      ? "Риск пройден без потерь."
+      : "Risk roll passed without losses.",
+  };
+}
+
+export function applyChoiceRiskToGameState(
+  state: GameState,
+  outcome: ChoiceRiskOutcome,
+): GameState {
+  return applyMiniGamePatch(state, {
+    latestAction: outcome.latestAction,
+    hpDelta: outcome.hpDelta,
+    addFlags: [outcome.flag, `choice_risk_${outcome.status}`],
+  });
 }
 
 export function applySceneToGameState(

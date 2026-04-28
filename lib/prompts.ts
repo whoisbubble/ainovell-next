@@ -55,6 +55,19 @@ CONSISTENCY RULES:
 - Do not break worldRules or forget major consequences.
 `;
 
+const RISK_ENGINE_RULES = `
+APPLICATION RISK ENGINE:
+- The application, not the AI model, resolves random risk for player choices.
+- choice.risk is only a UI/engine probability label.
+- Mark dangerous choices honestly: high means the app may kill the hero immediately.
+- In tense scenes, include at least one medium or high risk option when it fits the story.
+- Do not invent random success/failure/death for choice.risk by yourself.
+- On next-scene requests, the provided heroHp, flags, and latestActions already include the local risk roll result.
+- Respect flags like choice_risk_* and latestActions about wounds, survival, or fatal risk.
+- Keep statePatch.hpDelta = 0 for ordinary choice risk; use hpDelta only for explicit non-random story effects.
+- If heroHp <= 0, return a final scene immediately.
+`;
+
 const COMPACT_OUTPUT_RULES = `
 OUTPUT SIZE LIMITS:
 - Keep the JSON compact and complete.
@@ -173,6 +186,7 @@ Your priority is a valid GameConfig object that passes schema validation.
 ${COMMON_JSON_RULES}
 ${ENUM_RULES}
 ${CONSISTENCY_RULES}
+${RISK_ENGINE_RULES}
 ${COMPACT_OUTPUT_RULES}
 ${buildVisualAssetPrompt()}
 ${GAME_CONFIG_SHAPE}
@@ -186,6 +200,7 @@ Your priority is a valid GameScene object that passes schema validation.
 ${COMMON_JSON_RULES}
 ${ENUM_RULES}
 ${CONSISTENCY_RULES}
+${RISK_ENGINE_RULES}
 ${COMPACT_OUTPUT_RULES}
 ${buildVisualAssetPrompt()}
 ${GAME_SCENE_SHAPE}
@@ -271,6 +286,11 @@ Story length rule:
 - If mustEndNow = true, return a final scene with final.isFinal = true, choices = [], and a satisfying ending.
 - If remainingTurns <= 2, move strongly toward a conclusion.
 - Never create an endless loop.
+
+Risk engine rule:
+- The app already rolled the selected choice risk before this request.
+- Continue from the provided heroHp, flags, latestActions, and heroCurrentDescription.
+- Do not roll risk again and do not duplicate risk damage in statePatch.
 
 Return only a GameScene JSON object.
 `;

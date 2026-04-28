@@ -207,6 +207,7 @@ async function requestMistralText({
   });
 
   let response: Response | null = null;
+  let responseText = "";
   let lastNetworkError: unknown = null;
 
   for (let attempt = 1; attempt <= NETWORK_ATTEMPTS; attempt += 1) {
@@ -214,7 +215,7 @@ async function requestMistralText({
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
-      response = await fetch(apiUrl, {
+      const currentResponse = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -224,6 +225,9 @@ async function requestMistralText({
         cache: "no-store",
         signal: controller.signal,
       });
+      const currentResponseText = await currentResponse.text();
+      response = currentResponse;
+      responseText = currentResponseText;
       break;
     } catch (error) {
       lastNetworkError = error;
@@ -238,18 +242,19 @@ async function requestMistralText({
 
   if (!response) {
     throw new Error(
-      `Could not connect to AI API after ${NETWORK_ATTEMPTS} attempts.\n\nEndpoint: ${apiUrl}\nModel: ${model}\nDetails: ${describeError(lastNetworkError)}\n\nRestart npm run dev after changing .env.local. If this repeats, check VPN, proxy, firewall, or temporary network blocking.`,
+      `AI API connection was interrupted after ${NETWORK_ATTEMPTS} attempts.\n\nEndpoint: ${apiUrl}\nModel: ${model}\nDetails: ${describeError(lastNetworkError)}\n\nThis usually means the provider, proxy, VPN, firewall, or network closed the connection before the full response was read. Try again, lower AI_MAX_TOKENS/MISTRAL_MAX_TOKENS, or increase AI_TIMEOUT_MS/MISTRAL_TIMEOUT_MS. Restart npm run dev after changing .env.local.`,
     );
   }
 
-  const responseText = await response.text();
   let responseJson: unknown = {};
 
   if (responseText) {
     try {
       responseJson = JSON.parse(responseText);
     } catch {
-      throw new Error("Mistral API returned malformed HTTP JSON.");
+      throw new Error(
+        `AI API returned malformed HTTP JSON.\n\nEndpoint: ${apiUrl}\nModel: ${model}\nResponse preview:\n${createRawPreview(responseText, 800)}`,
+      );
     }
   }
 

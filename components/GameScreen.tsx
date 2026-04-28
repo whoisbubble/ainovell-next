@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
+  applyChoiceRiskToGameState,
   applyMiniGamePatch,
   applySceneToGameState,
   loadGameState,
+  rollChoiceRisk,
   saveGameState,
 } from "@/lib/game-state";
 import type { GameScene, GameState } from "@/lib/schemas";
@@ -47,12 +49,14 @@ export function GameScreen() {
     saveGameState(nextState);
   }
 
-  async function requestNextScene(choiceId: string) {
-    if (!gameState) {
+  async function requestNextScene(choiceId: string, stateOverride?: GameState) {
+    const activeState = stateOverride ?? gameState;
+
+    if (!activeState) {
       return;
     }
 
-    if (gameState.isFinal) {
+    if (activeState.isFinal) {
       setStatusText("Игра уже завершена.");
       return;
     }
@@ -69,8 +73,8 @@ export function GameScreen() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          gameConfig: gameState.gameConfig,
-          gameState,
+          gameConfig: activeState.gameConfig,
+          gameState: activeState,
           choiceId,
         }),
       });
@@ -83,7 +87,7 @@ export function GameScreen() {
         );
       }
 
-      updateState(applySceneToGameState(gameState, data.scene));
+      updateState(applySceneToGameState(activeState, data.scene));
       setRetryChoiceId(null);
       setStatusText("Сцена загружена.");
     } catch (requestError) {
@@ -111,6 +115,25 @@ export function GameScreen() {
 
     updateState(applyMiniGamePatch(gameState, payload));
     setStatusText("Результат мини-игры применён.");
+  }
+
+  function handleChoice(choice: GameScene["choices"][number]) {
+    if (!gameState || isLoading || gameState.isFinal) {
+      return;
+    }
+
+    const riskOutcome = rollChoiceRisk(gameState, choice);
+    const stateAfterRisk = applyChoiceRiskToGameState(gameState, riskOutcome);
+    updateState(stateAfterRisk);
+    setStatusText(riskOutcome.statusText);
+
+    if (stateAfterRisk.isFinal) {
+      setRetryChoiceId(null);
+      setError(null);
+      return;
+    }
+
+    void requestNextScene(choice.id, stateAfterRisk);
   }
 
   function handleMenuAction(label: string) {
@@ -303,7 +326,7 @@ export function GameScreen() {
                           key={choice.id}
                           choice={choice}
                           disabled={isLoading}
-                          onClick={() => requestNextScene(choice.id)}
+                          onClick={() => handleChoice(choice)}
                         />
                       ))}
                     </div>
