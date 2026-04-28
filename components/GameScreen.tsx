@@ -226,7 +226,7 @@ export function GameScreen() {
             </button>
           </nav>
           <div className="win95-content scroll-thin">
-            <div className="grid h-full min-h-0 grid-cols-[1fr_210px] gap-2">
+            <div className="game-layout grid h-full min-h-0 grid-cols-[1fr_210px] gap-2">
               <div className="min-w-0 space-y-2 overflow-auto pr-1 scroll-thin">
                 <div className="win95-panel">
                   <div className="mb-1 flex items-start justify-between gap-2">

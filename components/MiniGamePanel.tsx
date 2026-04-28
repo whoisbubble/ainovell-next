@@ -234,7 +234,7 @@ export function MiniGamePanel({
         ) : null}
 
         {scene.miniGame.type === "puzzle" ? (
-          <div className="mt-2 grid grid-cols-2 gap-1">
+          <div className="mini-game-options mt-2 grid grid-cols-2 gap-1">
             {scene.miniGame.options.map((option) => (
               <button
                 key={option}

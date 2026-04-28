@@ -10,6 +10,10 @@ export function RetroShell({ children }: RetroShellProps) {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    if (!window.matchMedia("(pointer: fine)").matches) {
+      return;
+    }
+
     function handleMove(event: PointerEvent) {
       const x = (event.clientX / window.innerWidth - 0.5) * 2;
       const y = (event.clientY / window.innerHeight - 0.5) * 2;

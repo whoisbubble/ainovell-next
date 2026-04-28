@@ -96,7 +96,7 @@ export function GameSetupForm() {
         />
       </label>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="setup-options-grid grid grid-cols-2 gap-2">
         <label>
           <span className="win95-label">Язык текста</span>
           <select
