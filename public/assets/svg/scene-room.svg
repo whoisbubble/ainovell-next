@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="retro room">
+  <rect width="640" height="360" fill="#008080"/>
+  <rect x="30" y="36" width="580" height="272" fill="#c0c0c0" stroke="#ffffff" stroke-width="4"/>
+  <rect x="40" y="46" width="560" height="252" fill="#1b2f35"/>
+  <path d="M40 298h560L510 210H130z" fill="#3d3d3d"/>
+  <path d="M130 210h380l-38-112H168z" fill="#263e46"/>
+  <rect x="76" y="74" width="118" height="88" fill="#111" stroke="#dcdcdc" stroke-width="3"/>
+  <path d="M92 144l32-42 24 25 17-18 18 35z" fill="#61787d"/>
+  <rect x="438" y="76" width="82" height="138" fill="#141414" stroke="#dcdcdc" stroke-width="3"/>
+  <circle cx="490" cy="145" r="6" fill="#e6d68b"/>
+  <rect x="245" y="236" width="150" height="42" fill="#535353" stroke="#0f0f0f" stroke-width="3"/>
+  <rect x="265" y="210" width="110" height="28" fill="#727272" stroke="#0f0f0f" stroke-width="3"/>
+  <path d="M0 0h640v360H0z" fill="none" stroke="#000" stroke-width="8"/>
+</svg>

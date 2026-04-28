@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="canteen">
+  <rect width="640" height="360" fill="#008080"/>
+  <rect x="32" y="32" width="576" height="290" fill="#c0c0c0" stroke="#fff" stroke-width="4"/>
+  <rect x="54" y="54" width="532" height="234" fill="#8f7c58"/>
+  <rect x="80" y="92" width="170" height="56" fill="#d8d8d8" stroke="#111" stroke-width="4"/>
+  <path d="M94 112h42M150 112h42M206 112h28" stroke="#a33" stroke-width="6"/>
+  <rect x="92" y="204" width="150" height="44" fill="#6e4b2e" stroke="#111" stroke-width="4"/>
+  <rect x="392" y="204" width="150" height="44" fill="#6e4b2e" stroke="#111" stroke-width="4"/>
+  <circle cx="155" cy="190" r="15" fill="#d6c07b" stroke="#111" stroke-width="3"/>
+  <circle cx="455" cy="190" r="15" fill="#d6c07b" stroke="#111" stroke-width="3"/>
+</svg>

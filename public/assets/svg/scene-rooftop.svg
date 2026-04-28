@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="rooftop">
+  <rect width="640" height="360" fill="#008080"/>
+  <rect x="30" y="28" width="580" height="294" fill="#c0c0c0" stroke="#fff" stroke-width="4"/>
+  <rect x="52" y="50" width="536" height="170" fill="#253d5e"/>
+  <path d="M52 220h536v70H52z" fill="#575757"/>
+  <path d="M52 202h536" stroke="#111" stroke-width="8"/>
+  <rect x="90" y="144" width="62" height="76" fill="#1b1b1b"/>
+  <rect x="210" y="112" width="82" height="108" fill="#252525"/>
+  <rect x="390" y="132" width="74" height="88" fill="#202020"/>
+  <circle cx="502" cy="82" r="26" fill="#f7d56d"/>
+  <path d="M104 250h432" stroke="#111" stroke-width="4"/>
+</svg>

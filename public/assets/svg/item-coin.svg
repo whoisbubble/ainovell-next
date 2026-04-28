@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" role="img" aria-label="coin">
+  <circle cx="24" cy="24" r="17" fill="#f7c948" stroke="#111" stroke-width="3"/>
+  <circle cx="24" cy="24" r="10" fill="#ffd96a" stroke="#9a6f00" stroke-width="3"/>
+  <path d="M24 15v18M18 24h12" stroke="#9a6f00" stroke-width="3"/>
+</svg>

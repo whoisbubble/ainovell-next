@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="retro roulette">
+  <rect width="640" height="360" fill="#008080"/>
+  <rect x="28" y="34" width="584" height="284" fill="#c0c0c0" stroke="#fff" stroke-width="4"/>
+  <rect x="58" y="62" width="524" height="224" fill="#153b2f"/>
+  <ellipse cx="320" cy="190" rx="148" ry="76" fill="#222" stroke="#eee" stroke-width="8"/>
+  <ellipse cx="320" cy="190" rx="105" ry="52" fill="#7a1616" stroke="#111" stroke-width="5"/>
+  <path d="M320 138v104M215 190h210M245 154l150 72M245 226l150-72" stroke="#e9e0a0" stroke-width="6"/>
+  <circle cx="320" cy="190" r="28" fill="#ddd" stroke="#111" stroke-width="5"/>
+  <circle cx="380" cy="168" r="12" fill="#f6f2c0" stroke="#111" stroke-width="4"/>
+  <rect x="88" y="92" width="84" height="36" fill="#c0c0c0" stroke="#111" stroke-width="4"/>
+  <rect x="468" y="92" width="84" height="36" fill="#c0c0c0" stroke="#111" stroke-width="4"/>
+  <path d="M96 110h66M476 110h66" stroke="#111" stroke-width="4"/>
+</svg>

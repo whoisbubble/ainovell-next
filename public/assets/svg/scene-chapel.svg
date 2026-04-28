@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="chapel">
+  <rect width="640" height="360" fill="#008080"/>
+  <rect x="34" y="30" width="572" height="292" fill="#c0c0c0" stroke="#fff" stroke-width="4"/>
+  <rect x="54" y="54" width="532" height="236" fill="#2a2430"/>
+  <path d="M320 74l86 98H234z" fill="#3f334a" stroke="#111" stroke-width="5"/>
+  <rect x="252" y="172" width="136" height="86" fill="#211b27" stroke="#111" stroke-width="5"/>
+  <path d="M320 106v88M286 148h68" stroke="#d8c06f" stroke-width="8"/>
+  <rect x="96" y="214" width="118" height="28" fill="#5a4638" stroke="#111" stroke-width="4"/>
+  <rect x="426" y="214" width="118" height="28" fill="#5a4638" stroke="#111" stroke-width="4"/>
+  <circle cx="320" cy="222" r="12" fill="#d8c06f"/>
+</svg>

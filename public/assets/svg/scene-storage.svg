@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-label="hidden object room">
+  <rect width="640" height="360" fill="#008080"/>
+  <rect x="24" y="28" width="592" height="292" fill="#bdbdbd" stroke="#fff" stroke-width="4"/>
+  <rect x="42" y="48" width="556" height="248" fill="#22333a"/>
+  <rect x="70" y="96" width="126" height="174" fill="#6b5d42" stroke="#111" stroke-width="4"/>
+  <path d="M70 132h126M70 174h126M70 216h126" stroke="#2c251a" stroke-width="5"/>
+  <rect x="240" y="122" width="128" height="148" fill="#4d4d4d" stroke="#111" stroke-width="4"/>
+  <rect x="262" y="90" width="80" height="32" fill="#9d9d9d" stroke="#111" stroke-width="4"/>
+  <path d="M410 250l42-126 54 126z" fill="#8a2d2d" stroke="#111" stroke-width="4"/>
+  <rect x="426" y="238" width="126" height="32" fill="#414141" stroke="#111" stroke-width="4"/>
+  <circle cx="490" cy="95" r="24" fill="#d7c56d" stroke="#111" stroke-width="4"/>
+  <path d="M60 296h536" stroke="#111" stroke-width="6"/>
+</svg>
