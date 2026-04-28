@@ -5,9 +5,17 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ainovell.bostoncrew.ru",
-  description: "Интерактивная AI-визуальная новелла в ретро-интерфейсе Windows 95.",
+  description:
+    "Интерактивная AI-визуальная новелла в ретро-интерфейсе Windows 95.",
+  applicationName: "ainovell.bostoncrew.ru",
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", type: "image/x-icon", sizes: "any" },
+      { url: "/icon.ico", type: "image/x-icon", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "32x32" },
+    ],
+    shortcut: [{ url: "/favicon.ico", type: "image/x-icon" }],
+    apple: [{ url: "/icon.png", type: "image/png", sizes: "32x32" }],
   },
 };
 
