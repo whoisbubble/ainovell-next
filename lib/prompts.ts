@@ -59,7 +59,12 @@ const RISK_ENGINE_RULES = `
 APPLICATION RISK ENGINE:
 - The application, not the AI model, resolves random risk for player choices.
 - choice.risk is only a UI/engine probability label.
-- Mark dangerous choices honestly: high means the app may kill the hero immediately.
+- low means safe: the app will not randomly damage or kill the hero.
+- medium means dangerous but not instantly lethal: the app may wound the hero.
+- high means explicitly life-threatening: the app may kill the hero immediately.
+- Inspection, reading, listening, talking, remembering, and cautious clue-searching must be low unless the action explicitly mentions a trap, enemy, weapon, poison, fire, infection, abyss, explosion, or another direct hazard.
+- Do not mark harmless investigation choices as medium or high.
+- Mark dangerous choices honestly: high is only for obviously lethal actions.
 - In tense scenes, include at least one medium or high risk option when it fits the story.
 - Do not invent random success/failure/death for choice.risk by yourself.
 - On next-scene requests, the provided heroHp, flags, and latestActions already include the local risk roll result.
@@ -71,7 +76,7 @@ APPLICATION RISK ENGINE:
 const COMPACT_OUTPUT_RULES = `
 OUTPUT SIZE LIMITS:
 - Keep the JSON compact and complete.
-- characters: 2-3 entries.
+- characters: include every important user-named character, especially every entry from a "Characters" or "Персонажи" list; use short one-sentence fields to keep JSON compact.
 - items: 3-5 entries.
 - worldRules: 3-5 short strings.
 - description/personality/hiddenMotive fields: 1 short sentence.
@@ -223,6 +228,14 @@ Language rule:
 - All player-visible text must be in ${languageName[language]}.
 - IDs must still be English lowercase.
 - If language is Russian, names, dialogues, descriptions, choices, logs, summaries, endings, items, and worldRules must be natural Russian.
+
+Cast preservation rule:
+- Treat the user's named character list as canon.
+- Include every named character from a "Characters" or "Персонажи" section in gameConfig.characters, except the one chosen as hero.
+- Do not merge several listed people into one character.
+- Do not rename listed people in visible names; keep their names recognizable and in the user's language.
+- If the user describes two protagonists, choose the first suitable protagonist as hero and include the second as a trusted main character.
+- Keep each character concise: role, description, personality, relationshipToHero, and hiddenMotive should each be one short sentence.
 
 Story length:
 - The whole story must be designed for a maximum of ${maxTurns} player turns including the start.

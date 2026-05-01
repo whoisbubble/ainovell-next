@@ -283,7 +283,7 @@ export const gameStateSchema = z
 
 export const generateGameRequestSchema = z
   .object({
-    prompt: z.string().min(10).max(1200),
+    prompt: z.string().min(10).max(6000),
     language: z.enum(SUPPORTED_LANGUAGES).default("ru"),
     maxTurns: z
       .number()

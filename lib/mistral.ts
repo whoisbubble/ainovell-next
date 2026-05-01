@@ -62,6 +62,7 @@ function getEnv() {
       process.env.MISTRAL_TIMEOUT_MS ??
       DEFAULT_TIMEOUT_MS,
   );
+  const globalSystemPrompt = process.env.AI_GLOBAL_SYSTEM_PROMPT?.trim() ?? "";
 
   if (!apiKey) {
     throw new Error(
@@ -82,6 +83,7 @@ function getEnv() {
     apiUrl,
     maxTokens: Number.isFinite(maxTokens) ? maxTokens : DEFAULT_MAX_TOKENS,
     timeoutMs: Number.isFinite(timeoutMs) ? timeoutMs : DEFAULT_TIMEOUT_MS,
+    globalSystemPrompt,
   };
 }
 
@@ -182,7 +184,7 @@ Make the output compact:
 - asciiScene: 3-6 short lines
 - dialogues: 1-3 entries
 - choices: 2-3 entries for non-final scenes
-- characters: 2-3 entries for GameConfig
+- characters: include every important user-named character for GameConfig, especially all entries from a Characters/Персонажи list
 - items: 3-5 entries for GameConfig
 
 Original task:
@@ -194,14 +196,24 @@ async function requestMistralText({
   systemPrompt,
   userPrompt,
 }: MistralRequestOptions) {
-  const { apiKey, model, apiUrl, maxTokens, timeoutMs } = getEnv();
+  const {
+    apiKey,
+    model,
+    apiUrl,
+    maxTokens,
+    timeoutMs,
+    globalSystemPrompt,
+  } = getEnv();
+  const finalSystemPrompt = globalSystemPrompt
+    ? `${globalSystemPrompt}\n\n--- ENGINE SCHEMA RULES BELOW ---\n\n${systemPrompt}`
+    : systemPrompt;
   const requestBody = JSON.stringify({
     model,
     temperature: 0.2,
     max_tokens: maxTokens,
     response_format: { type: "json_object" },
     messages: [
-      { role: "system", content: systemPrompt },
+      { role: "system", content: finalSystemPrompt },
       { role: "user", content: userPrompt },
     ],
   });

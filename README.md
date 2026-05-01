@@ -34,6 +34,7 @@ AI_MODEL=mistral-small-latest
 AI_API_URL=https://api.mistral.ai/v1/chat/completions
 AI_MAX_TOKENS=8192
 AI_TIMEOUT_MS=120000
+AI_GLOBAL_SYSTEM_PROMPT=
 ```
 
 Старые переменные `MISTRAL_API_KEY`, `MISTRAL_MODEL`, `MISTRAL_API_URL` тоже поддерживаются. Для OpenAI-compatible API можно указать `AI_API_KEY`, `AI_MODEL` и `AI_API_URL`.

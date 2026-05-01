@@ -40,13 +40,13 @@ export type ChoiceRiskOutcome = {
 export const CHOICE_RISK_RULES: Record<ChoiceRisk, ChoiceRiskRule> = {
   low: {
     fatalChance: 0,
-    woundChance: 0.16,
-    minDamage: 4,
-    maxDamage: 10,
+    woundChance: 0,
+    minDamage: 0,
+    maxDamage: 0,
   },
   medium: {
-    fatalChance: 0.12,
-    woundChance: 0.42,
+    fatalChance: 0,
+    woundChance: 0.38,
     minDamage: 12,
     maxDamage: 28,
   },
@@ -74,10 +74,63 @@ function choiceLabel(choice: GameScene["choices"][number]) {
   return choice.text.replace(/\s+/g, " ").trim();
 }
 
+function normalizeText(value: string) {
+  return value.toLowerCase().replace(/\s+/g, " ");
+}
+
+function hasAnyPattern(value: string, patterns: RegExp[]) {
+  return patterns.some((pattern) => pattern.test(value));
+}
+
+const safeActionPatterns = [
+  /(^|\s)(осмотреть|рассмотреть|изучить|проверить|прочитать|посмотреть|наблюдать|прислушаться|слушать|поговорить|спросить|ответить|подумать|вспомнить)(\s|$)/i,
+  /(^|\s)(inspect|examine|study|check|read|look|observe|listen|talk|ask|answer|think|remember)(\s|$)/i,
+];
+
+const dangerActionPatterns = [
+  /(ловуш|опасн|смерт|атак|удар|стрел|оруж|нож|пистолет|враг|монстр|заражен|огонь|плам|яд|кислот|проклят|аномал|радиац|обрыв|прыг|бежать|штурм|взорв|бомб)/i,
+  /(trap|danger|deadly|attack|hit|shoot|weapon|knife|gun|enemy|monster|infected|fire|poison|acid|cursed|anomaly|radiation|abyss|jump|run|storm|explode|bomb)/i,
+];
+
+function shouldSkipRandomRisk(choice: GameScene["choices"][number]) {
+  const text = normalizeText(`${choice.text} ${choice.hint}`);
+
+  if (choice.risk === "low") {
+    return true;
+  }
+
+  return hasAnyPattern(text, safeActionPatterns) && !hasAnyPattern(text, dangerActionPatterns);
+}
+
+function buildSafeRiskOutcome(
+  state: GameState,
+  choice: GameScene["choices"][number],
+): ChoiceRiskOutcome {
+  const isRussian = state.language === "ru";
+  const choiceText = choiceLabel(choice);
+
+  return {
+    status: "safe",
+    hpDelta: 0,
+    roll: 1,
+    flag: `choice_risk_${choice.id}_safe_action`,
+    latestAction: isRussian
+      ? `Герой безопасно выполнил действие "${choiceText}".`
+      : `The hero safely performed the action "${choiceText}".`,
+    statusText: isRussian
+      ? "Безопасное действие: случайный риск не применяется."
+      : "Safe action: random risk was not applied.",
+  };
+}
+
 export function rollChoiceRisk(
   state: GameState,
   choice: GameScene["choices"][number],
 ): ChoiceRiskOutcome {
+  if (shouldSkipRandomRisk(choice)) {
+    return buildSafeRiskOutcome(state, choice);
+  }
+
   const rule = CHOICE_RISK_RULES[choice.risk];
   const roll = Math.random();
   const isRussian = state.language === "ru";
